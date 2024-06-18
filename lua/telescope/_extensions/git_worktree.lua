@@ -159,23 +159,18 @@ local telescope_git_worktree = function(opts)
             branch = fields[3],
         }
 
-         if entry.sha ~= "(bare)" then
-             local index = #results + 1
-             for key, val in pairs(widths) do
-                 if key == 'path' then
-                     -- Ensure opts.layout is not nil before calling transform_path
-                     opts.layout = opts.layout or {}
-                     local new_path = utils.transform_path(opts, entry[key])
-                     local path_len = strings.strdisplaywidth(new_path or "")
-                     widths[key] = math.max(val, path_len)
-                 else
-                     widths[key] = math.max(val, strings.strdisplaywidth(entry[key] or ""))
-                 end
-             end
-
-             table.insert(results, index, entry)
-         end
-     end
+        if entry.sha ~= "(bare)" then
+            local index = #results + 1
+            for key, val in pairs(widths) do
+                if key == 'path' then
+                    opts.layout = opts.layout or {}
+                    local new_path = utils.transform_path(opts, entry[key])
+                    local path_len = strings.strdisplaywidth(new_path or "")
+                    widths[key] = math.max(val, path_len)
+                else
+                    widths[key] = math.max(val, strings.strdisplaywidth(entry[key] or ""))
+                end
+            end
 
             table.insert(results, index, entry)
         end
